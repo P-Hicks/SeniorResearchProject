@@ -68,13 +68,24 @@ def main():
       player.reset_turns()
   for player in players:
     game_stats_list = player_stats[player]
-    unused_stats = Stats(game_stats_list, lambda s : s.num_unused_turns)
-    draw_stats = Stats(game_stats_list, lambda s : s.num_draws_used)
-    discard_stats = Stats(game_stats_list, lambda s : s.num_discards_used)
+    punused_stats = Stats(game_stats_list, lambda s : (s.num_unused_turns / s.num_turns))
+    pdraw_stats = Stats(game_stats_list, lambda s : (s.num_draws_used / s.num_turns))
+    pdiscard_stats = Stats(game_stats_list, lambda s : (s.num_discards_used / s.num_turns))
+    unused_stats = Stats(game_stats_list, lambda s : (s.num_unused_turns))
+    draw_stats = Stats(game_stats_list, lambda s : (s.num_draws_used))
+    discard_stats = Stats(game_stats_list, lambda s : (s.num_discards_used))
+    
     turns_stats = Stats(game_stats_list, lambda s : s.num_turns)
     print(player.player.title)
-    print("Turns: {:.2f}(+-{:.2f})".format(turns_stats.mean, turns_stats.std_dev))
-    print("Unused: {:.2f}(+-{:.2f})".format(unused_stats.mean, unused_stats.std_dev))
+    # for game in game_stats_list:
+    #   print(f"t:{game.num_turns} dr:{game.num_draws_used} di:{game.num_discards_used} un:{game.num_unused_turns} ")
+    print("\tTurns: {:.2f}(+-{:.2f})".format(turns_stats.mean, turns_stats.std_dev))
+    print("\t% Draws: {:.5f}(+-{:.5f})".format(100* pdraw_stats.mean, 100*pdraw_stats.std_dev))
+    print("\t% Discards: {:.5f}(+-{:.5f})".format(100* pdiscard_stats.mean, 100*pdiscard_stats.std_dev))
+    print("\t% Unused: {:.5f}(+-{:.5f})".format(100* punused_stats.mean, 100*punused_stats.std_dev))
+    print("\tDraws: {:.2f}(+-{:.2f})".format(draw_stats.mean, draw_stats.std_dev))
+    print("\tDiscards: {:.2f}(+-{:.2f})".format(discard_stats.mean, discard_stats.std_dev))
+    print("\tUnused: {:.2f}(+-{:.2f})".format(unused_stats.mean, unused_stats.std_dev))
 
 
     

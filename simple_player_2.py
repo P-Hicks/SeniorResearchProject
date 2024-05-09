@@ -17,4 +17,3 @@ class SimplePlayer(Player):
       self.hand[slot] = game_card_tracker.see_discard()
     return old_card
 
-print(SimplePlayer.title)

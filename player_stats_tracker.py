@@ -1,7 +1,9 @@
 import player
-import random 
+import random
 
-class TurnEnum:
+from enum import Enum
+
+class TurnEnum(Enum):
   USED_DISCARD = 0
   USED_DRAW = 1
   DID_NOTHING = 2
@@ -10,11 +12,16 @@ class TurnStats:
   def __init__(self):
     self.turn_type = None
 
+  def __str__(self):
+    return str(self.turn_type)
+
 class GameCardTrackerWrapper():
   def __init__(self, tracker):
     self.tracker = tracker
     self.turn_stats = TurnStats()
     self.card = None
+    # because this wraps AFTER turn starts 
+    self.start_turn()
 
   def see_discard(self):
     return self.tracker.see_discard()
@@ -44,10 +51,22 @@ class GameCardTrackerWrapper():
 class GameData:
 
   def __init__(self, turns):
+    # print([str(turn) for turn in turns])
     self.num_turns = len(turns)
-    self.num_unused_turns = sum(1 for turn in turns if turn.turn_type == TurnEnum.DID_NOTHING)
-    self.num_discards_used = sum(1 for turn in turns if turn.turn_type == TurnEnum.USED_DISCARD)
-    self.num_draws_used = sum(1 for turn in turns if turn.turn_type == TurnEnum.USED_DRAW)
+    # self.num_unused_turns = sum(1 for turn in turns if turn.turn_type is TurnEnum.DID_NOTHING)
+    # self.num_discards_used = sum(1 for turn in turns if turn.turn_type is TurnEnum.USED_DISCARD)
+    # self.num_draws_used = sum(1 for turn in turns if turn.turn_type is TurnEnum.USED_DRAW)
+    self.num_unused_turns = 0
+    self.num_discards_used = 0
+    self.num_draws_used = 0
+    for turn in turns:
+      if (turn.turn_type == TurnEnum.DID_NOTHING):
+        self.num_unused_turns += 1
+      if (turn.turn_type == TurnEnum.USED_DISCARD):
+        self.num_discards_used += 1
+      if (turn.turn_type == TurnEnum.USED_DRAW):
+        self.num_draws_used += 1
+        
 
 
 
