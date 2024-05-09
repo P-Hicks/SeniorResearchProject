@@ -1,33 +1,54 @@
 import player
 import random 
 
+class TurnEnum:
+  USED_DISCARD = 0
+  USED_DRAW = 1
+  DID_NOTHING = 2
+
 class TurnStats:
   def __init__(self):
-    self.used_discard = False
-    self.used_draw_pile = False
+    self.turn_type = None
 
 class GameCardTrackerWrapper():
   def __init__(self, tracker):
     self.tracker = tracker
+    self.turn_stats = TurnStats()
+    self.card = None
 
   def see_discard(self):
     return self.tracker.see_discard()
+    
 
   def start_turn(self):
     self.turn_stats = TurnStats()
+    self.turn_stats.turn_type = TurnEnum.USED_DISCARD
     return self.tracker.start_turn()
 
   def discard(self, card):
     return self.tracker.discard(card)
 
   def draw_card(self):
-    return self.tracker.draw_card()
-    
+    self.turn_stats.turn_type = TurnEnum.USED_DRAW
+    result =  self.tracker.draw_card()
+    self.card = result
+    return result 
+  
   def deal(self, players):
     return self.tracker.deal(players)
   
   def get_turn_stats(self):
-    pass
+    return self.turn_stats
+
+
+class GameData:
+
+  def __init__(self, turns):
+    self.num_turns = len(turns)
+    self.num_unused_turns = sum(1 for turn in turns if turn.turn_type == TurnEnum.DID_NOTHING)
+    self.num_discards_used = sum(1 for turn in turns if turn.turn_type == TurnEnum.USED_DISCARD)
+    self.num_draws_used = sum(1 for turn in turns if turn.turn_type == TurnEnum.USED_DRAW)
+
 
 
 class PlayerStatsTracker(player.Player):
@@ -40,6 +61,7 @@ class PlayerStatsTracker(player.Player):
     self.name = name
 
     self._has_racko = False
+    self.turns = [ ]
 
   def has_racko(self):
     result = self.player.has_racko()
@@ -50,9 +72,21 @@ class PlayerStatsTracker(player.Player):
   def take_turn(self, game_card_tracker):
     if (self._has_racko):
       raise Exception("I have racko, i wont take a turn.")
-    wrapped_tracker = 
+    wrapped_tracker = GameCardTrackerWrapper(game_card_tracker)
     result = self.player.take_turn(wrapped_tracker)
+    stats = wrapped_tracker.get_turn_stats()
+    if (result == wrapped_tracker.card):
+      stats.turn_type = TurnEnum.DID_NOTHING
+    self.turns.append(stats)
+    return result
+
+  def get_turns(self):
+    return GameData(self.turns)
+  
+  def reset_turns(self):
+    self.turns = [ ]
+                  
 
   def start_with_hand(self, hand):
     self._has_racko = False
-
+    return self.player.start_with_hand(hand)
