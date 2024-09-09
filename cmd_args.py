@@ -7,8 +7,6 @@ class NullValue:
 
 def get_args():
 	params, kwargs = parse_args(sys.argv)
-	print(params)
-	print(kwargs)
 	return params, kwargs
 
 def parse_args(list_args):

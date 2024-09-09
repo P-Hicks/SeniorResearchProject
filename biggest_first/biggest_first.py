@@ -6,9 +6,9 @@ def abs(x):
   else:
     return - x
 
-class SimplePlayer(Player):
+class BiggestFirstPlayer(Player):
   
-  title = "BiggestFirst"
+  title = f"BiggestFirst"
 
   def take_turn(self, game_card_tracker):
     discard = game_card_tracker.see_discard()

@@ -51,8 +51,11 @@ def main():
   players = []
 
   for module in args[1:]:
-    code = __import__(module, level=0, globals=globals())
-    players.append(player_stats_tracker.PlayerStatsTracker(code.SimplePlayer(), name = code.SimplePlayer.title))
+    print(module)
+    module_name, class_name = module.split(":")
+    code = __import__(module_name, level=0, globals=globals())
+
+    players.append(player_stats_tracker.PlayerStatsTracker(getattr(code, class_name)(), name = getattr(code, class_name).title))
   
   player_stats = { player : list() for player in players}
   
@@ -77,8 +80,6 @@ def main():
     
     turns_stats = Stats(game_stats_list, lambda s : s.num_turns)
     print(player.player.title)
-    # for game in game_stats_list:
-    #   print(f"t:{game.num_turns} dr:{game.num_draws_used} di:{game.num_discards_used} un:{game.num_unused_turns} ")
     print("\tTurns: {:.2f}(+-{:.2f})".format(turns_stats.mean, turns_stats.std_dev))
     print("\t% Draws: {:.5f}(+-{:.5f})".format(100* pdraw_stats.mean, 100*pdraw_stats.std_dev))
     print("\t% Discards: {:.5f}(+-{:.5f})".format(100* pdiscard_stats.mean, 100*pdiscard_stats.std_dev))
