@@ -51,11 +51,7 @@ class GameCardTrackerWrapper():
 class GameData:
 
   def __init__(self, turns):
-    # print([str(turn) for turn in turns])
     self.num_turns = len(turns)
-    # self.num_unused_turns = sum(1 for turn in turns if turn.turn_type is TurnEnum.DID_NOTHING)
-    # self.num_discards_used = sum(1 for turn in turns if turn.turn_type is TurnEnum.USED_DISCARD)
-    # self.num_draws_used = sum(1 for turn in turns if turn.turn_type is TurnEnum.USED_DRAW)
     self.num_unused_turns = 0
     self.num_discards_used = 0
     self.num_draws_used = 0
@@ -66,6 +62,8 @@ class GameData:
         self.num_discards_used += 1
       if (turn.turn_type == TurnEnum.USED_DRAW):
         self.num_draws_used += 1
+
+
         
 
 

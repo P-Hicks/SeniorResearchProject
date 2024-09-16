@@ -16,43 +16,45 @@ class TunnelsPlayer(BiggestFirstPlayer):
   title = "Tunnels"
 
   def take_turn(self, game_card_tracker):
-    differences = [self.hand[i] - i*6 for i in range(len(self.hand))]
-    indexes_of_in_place_slots = [i for i in range(len(self.hand)) if abs(differences[i]) <= 6]
-    if len(indexes_of_in_place_slots) < 2:
-        return super().take_turn(self, game_card_tracker)
+    self.differences = [self.hand[i] - (i*6) for i in range(len(self.hand))]
+    self.indexes_of_in_place_slots = [i for i in range(len(self.hand)) if abs(self.differences[i]) <= 6]
+    if len(self.indexes_of_in_place_slots) < 2 or True:
+      return super().take_turn(game_card_tracker)
     discard = game_card_tracker.see_discard()
     try:
-      return self.try_card(discard)
+      result = self.try_card(discard)
+      return result
     except:
       pass
     card = game_card_tracker.draw_card()
     try:
-      return self.try_card(card)
+      result = self.try_card(card)
+      return result
     except:
       pass
     return card
   
   def try_card(self, card):
     slot = int(card / 6)
-    if slot in indexes_of_in_place_slots:
+    if not slot in self.indexes_of_in_place_slots:
       old_card = self.hand[slot]
-      if old_card > card:
-        while old_card > card and slot >= 0 and slot not in indexes_of_in_place_slots:
-          slot = slot - 1
-          old_card = self.hand[slot]
-        if slot == 0:
-          raise Exception()
-        self.hand[slot] = card
-        return old_card
-      else:
-        while old_card < card and slot < len(self.hand) and slot not in indexes_of_in_place_slots:
-          slot = slot + 1
-          old_card = self.hand[slot]
-        if slot >= len(self.hand):
-          raise Exception()
-        self.hand[slot] = card
-        return old_card
+      self.hand[slot] = card
+      return old_card
+    raise Exception()
+    old_card = self.hand[slot]
+    if old_card > card:
+      while old_card > card and slot >= 0 and slot not in self.indexes_of_in_place_slots:
+        slot = slot - 1
+        old_card = self.hand[slot]
+      if slot == 0:
+        raise Exception()
+      self.hand[slot] = card
+      return old_card
     else:
-      old_card = self.hand[slot]
+      while old_card < card and slot < len(self.hand) and slot not in self.indexes_of_in_place_slots:
+        slot = slot + 1
+        old_card = self.hand[slot]
+      if slot >= len(self.hand):
+        raise Exception()
       self.hand[slot] = card
       return old_card

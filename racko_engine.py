@@ -9,6 +9,8 @@ import cmd_args
 
 from statistics import stdev, mean
 
+import time
+
 class Stats:
 
   def __init__(self, lst, f):
@@ -63,12 +65,17 @@ def main():
   n = int(kwargs.get('n', '1000'))
   random.seed(seed)
   seeds = [random.randint(-(2**32),(2**32)) for i in range(n) ]
+  start_time = time.time()
+
   for game_seed in seeds:
     run_game(players, game_seed)
     for player in players:
       game_stats = player.get_turns()
       player_stats[player].append(game_stats)
       player.reset_turns()
+
+  print("--- %s seconds ---" % (time.time() - start_time))
+
   for player in players:
     game_stats_list = player_stats[player]
     punused_stats = Stats(game_stats_list, lambda s : (s.num_unused_turns / s.num_turns))
