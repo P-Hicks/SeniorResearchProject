@@ -1,7 +1,11 @@
-from orm.manage import init_django, migrate
+def setup1():
+    from orm.manage import init_django
 
-init_django()
+    init_django()
 
-from orm.db.models import *
 
-migrate()
+def setup2():
+    from orm.manage import migrate
+    from orm.db import models
+
+    migrate()

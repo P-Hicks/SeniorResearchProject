@@ -37,9 +37,7 @@ class TunnelsPlayer(BiggestFirstPlayer):
   def try_card(self, card):
     slot = int(card / 6)
     if not slot in self.indexes_of_in_place_slots:
-      old_card = self.hand[slot]
-      self.hand[slot] = card
-      return old_card
+      self.replace_slot_with(slot=slot, card=card)
     raise Exception()
     old_card = self.hand[slot]
     if old_card > card:

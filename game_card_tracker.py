@@ -32,5 +32,5 @@ class GameCardTracker:
     
   def deal(self, players):
     for i in range(len(players)):
-      players[i].start_with_hand(self.deck[0:10])
+      players[i].start_with_hand(self.deck[0:10], i)
       self.deck = self.deck[11:]

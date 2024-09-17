@@ -25,6 +25,11 @@ class StartingHand(Model):
         on_delete=models.CASCADE,
         null=True,
     )
+    game = models.ForeignKey(
+        "Game",
+        on_delete=models.CASCADE,
+        null=True
+    )
 
 class Turn(Model):
     class Types(models.TextChoices):
@@ -39,11 +44,32 @@ class Turn(Model):
     )
     turn_number = models.IntegerField(null=False,blank=False,default=-1)
     draw_choice = models.IntegerField(null=True,)
+    slot = models.IntegerField(null=True,)
     discard_choice = models.IntegerField(null=False,blank=False,default=-1)
-    card_used = models.IntegerField(null=False,blank=False,default=-1)
+    card_used = models.IntegerField(null=True,blank=True,)
+    card_discarded = models.IntegerField(null=False,blank=False,default=-1)
     
     player = models.ForeignKey(
         "Player",
         on_delete=models.CASCADE,
         null=True
     )
+    game = models.ForeignKey(
+        "Game",
+        on_delete=models.CASCADE,
+        null=True
+    )
+
+    def set_type(self):
+        if self.card_used is self.draw_choice:
+            self.turn_type = Turn.Types.DRAW
+            return
+        elif self.card_used is self.discard_choice:
+            self.turn_type = Turn.Types.DISCARD
+            return
+        elif self.card_used is None:
+            self.turn_type = Turn.Types.NONE
+            return
+        raise Exception('What malformed turn happened?')
+        
+        

@@ -4,11 +4,6 @@ the Replacement algorithm looks at the top of the discard deck, and figures out 
 
 from player import Player
 
-# def abs(x):
-#   if (x >= 0):
-#     return x
-#   else:
-#     return - x
 
 class ReplacementPlayer(Player):
   
@@ -21,21 +16,19 @@ class ReplacementPlayer(Player):
     real_difference = old_card - (6*slot)
     abs_difference = abs(real_difference)
     if (abs_difference > 6):
-      self.hand[slot] = discard
-      return old_card
+      self.replace_slot_with(slot=slot, card=discard)
+      return
     if (old_card > discard):
       while slot > 0 and self.hand[slot] > discard:
         slot = slot - 1
       if slot < 0:
-        return discard
-      old_card = self.hand[slot]
-      self.hand[slot] = discard
-      return old_card
+        return self.do_nothing(discard=discard)
+      self.replace_slot_with(slot=slot, card=discard)
+      return
     else:
       while slot < len(self.hand) and self.hand[slot] < discard:
         slot = slot + 1
       if (slot >= len(self.hand)):
-        return discard
-      old_card = self.hand[slot]
-      self.hand[slot] = discard
-      return old_card
+        return self.do_nothing(discard=discard)
+      self.replace_slot_with(slot=slot, card=discard)
+      return

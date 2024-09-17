@@ -1,4 +1,14 @@
 
+class CardUsedException(Exception):
+  def __init__(self, card_inserted, card_discarded, slot):
+    self.card_inserted = card_inserted
+    self.card_discarded = card_discarded
+    self.slot = slot
+
+class UnusedTurnException(Exception):
+  def __init__(self, discard):
+    self.discard = discard
+
 class Player:
   def has_racko(self):
     i = -1
@@ -14,24 +24,16 @@ class Player:
   def start_with_hand(self, hand):
     self.hand = hand
 
-  def replace_slot_with(slot, card):
+  def replace_slot_with(self, slot, card):
     old_card = self.hand[slot]
-    slef.hand[slot] = card
-    return old_card
-
-  # def replace_when(slot, card, condition, step):
-  #   '''
-  #   condition = condition(card_in_slot, card)
-  #   step = step(i)
-  #   '''
-  #   while not condition(self.hand[slot], card):
-  #     slot = step(slot)
-  #   if slot < 0 or slot > len(self.hand):
-  #     raise Exception("")
-  #   return replace_slot_with(slot, card)
+    self.hand[slot] = card
+    raise CardUsedException(
+      card_inserted=card,
+      slot=slot,
+      card_discarded=old_card
+    )
+    # return old_card
   
-  # def place_near_when(slot, card, condition):
-  #   if (self.hand[slot] > card):
-  #     return self.replace_when(slot, card, lamda i : condition, lambda i : i - 1)
-  #   else:
-  #     return self.replace_when(slot, card, lambda i : condition, lambda i : i + 1)
+  def do_nothing(self, discard):
+    raise UnusedTurnException(discard=discard)
+
