@@ -32,3 +32,4 @@ class ReplacementPlayer(Player):
         return self.do_nothing(discard=discard)
       self.replace_slot_with(slot=slot, card=discard)
       return
+    self.do_nothing(discard)

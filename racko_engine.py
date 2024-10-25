@@ -29,8 +29,15 @@ def run_game(players, seed):
         top_discard = game_cards.see_discard()
         discard = player.take_turn(game_cards)
         # game_cards.discard(discard)
-
-      num_players_playing = len([player for player in players if not player.has_racko()])
+      players_playing = []
+      for player in players:
+        if player.has_racko():
+          print(player.title + " has racko")
+        else:
+          players_playing.append(player)
+      # num_players_playing = len([player for player in players if not player.has_racko()])
+      num_players_playing = len(players_playing)
+      print(num_players_playing)
       if num_players_playing == 1:
         game_cards.start_turn()
         game_cards.discard(game_cards.draw_card())
@@ -57,8 +64,9 @@ def main():
   random.seed(seed)
   seeds = [random.randint(-(2**32),(2**32)) for i in range(n) ]
   start_time = time.time()
-
+  i = 0
   for game_seed in seeds:
+    i = i + 1
     game = Game.objects.create(
       seed = game_seed
     )
@@ -76,6 +84,8 @@ def main():
       Turn.objects.bulk_create(wrapped_data_holder.turns)
       
       player.reset_turns()
+    game_time = time.time() - start_time
+    print(f'Game {i} : Seed {seed} : {game_time} seconds elapsed')
 
   print("--- %s seconds ---" % (time.time() - start_time))
 

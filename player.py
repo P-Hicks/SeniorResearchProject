@@ -26,6 +26,7 @@ class Player:
 
   def replace_slot_with(self, slot, card):
     old_card = self.hand[slot]
+    print(f'{self.title}:Replaced {old_card} at {slot} with {card} for {self.hand}')
     self.hand[slot] = card
     raise CardUsedException(
       card_inserted=card,
@@ -35,5 +36,6 @@ class Player:
     # return old_card
   
   def do_nothing(self, discard):
+    print(f'{self.title}:Did nothing with {discard} for {self.hand}')
     raise UnusedTurnException(discard=discard)
 

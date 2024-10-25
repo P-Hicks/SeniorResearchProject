@@ -47,6 +47,9 @@ class PlayerStatsTracker(player.Player):
   '''
   Should track stats of player.
   '''
+  @property
+  def title(self):
+    return self.player.title
 
   def __init__(self, player, name):
     self.player = player
