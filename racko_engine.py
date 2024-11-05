@@ -32,12 +32,13 @@ def run_game(players, seed):
       players_playing = []
       for player in players:
         if player.has_racko():
-          print(player.title + " has racko")
+          # print(player.title + " has racko")
+          pass
         else:
           players_playing.append(player)
       # num_players_playing = len([player for player in players if not player.has_racko()])
       num_players_playing = len(players_playing)
-      print(num_players_playing)
+      print("Turn: ", turn_count, " : ", num_players_playing)
       if num_players_playing == 1:
         game_cards.start_turn()
         game_cards.discard(game_cards.draw_card())
