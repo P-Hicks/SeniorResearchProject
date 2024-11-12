@@ -23,3 +23,4 @@ class BiggestFirstPlayer(Player):
     card = game_card_tracker.draw_card()
     slot = int(card / 6)
     self.replace_slot_with(slot=slot, card=card)
+

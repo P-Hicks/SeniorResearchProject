@@ -1,3 +1,4 @@
+from config import get_should_print
 import player
 import random
 from orm.db.models import Turn, StartingHand, Player as PlayerRecord
@@ -19,10 +20,16 @@ class GameCardTrackerWrapper():
     self.start_turn()
 
   def see_discard(self):
-    result =  self.tracker.see_discard()
+    result = self.tracker.see_discard()
     self._discard_card = result
     return result 
-    
+  
+  
+  def use_discard(self):
+    return self.tracker.use_discard()
+  
+  def take_discard(self, card):
+    self.tracker.take_discard(card)
 
   def start_turn(self):
     return self.tracker.start_turn()
@@ -40,7 +47,11 @@ class GameCardTrackerWrapper():
   
 
         
-
+def print_deck_state(game_card_tracker):
+  if get_should_print():
+    print(f"Deck: {game_card_tracker.deck}")
+    print(f"Discard Pile: {game_card_tracker.discard_pile}")
+      
 
 
 class PlayerStatsTracker(player.Player):
@@ -83,9 +94,15 @@ class PlayerStatsTracker(player.Player):
       )
       turn.set_type()
       self.turns.append(turn)
+      if (cue.card_discarded == game_card_tracker.see_discard()):
+        wrapped_tracker.take_discard(cue.card_discarded)
+      elif cue.card_inserted == game_card_tracker.see_discard():
+        wrapped_tracker.use_discard()
       wrapped_tracker.discard(cue.card_discarded)
+      print_deck_state(game_card_tracker)
       return
     except player.UnusedTurnException as ute:
+      
       turn = Turn(
         turn_type = Turn.Types.NONE,
         draw_choice = wrapped_tracker._draw_card,
@@ -97,7 +114,11 @@ class PlayerStatsTracker(player.Player):
         slot = None,
       )
       self.turns.append(turn)
+      if (ute.discard == game_card_tracker.see_discard()):
+        wrapped_tracker.take_discard(ute.discard)
+    
       wrapped_tracker.discard(ute.discard)
+      print_deck_state(game_card_tracker)
       return
     
   def get_turns(self):
@@ -119,4 +140,4 @@ class PlayerStatsTracker(player.Player):
       player = self.player_record,
       turn_order = turn_number
     )
-    return self.player.start_with_hand(hand)
+    return self.player.start_with_hand(hand, turn_number)

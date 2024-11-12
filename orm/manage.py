@@ -1,5 +1,5 @@
 
-def init_django():
+def init_django(name='db'):
     import django
     from django.conf import settings
 
@@ -13,7 +13,7 @@ def init_django():
         DATABASES={
            'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': 'db.sqlite3', # This is where you put the name of the db file. 
+                'NAME': f'{name}.sqlite3', # This is where you put the name of the db file. 
                         # If one doesn't exist, it will be created at migration time.
             }
         }

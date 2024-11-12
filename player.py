@@ -1,4 +1,7 @@
 
+from config import get_should_print
+
+
 class CardUsedException(Exception):
   def __init__(self, card_inserted, card_discarded, slot):
     self.card_inserted = card_inserted
@@ -21,13 +24,14 @@ class Player:
   def take_turn(self, game_card_tracker):
     pass
 
-  def start_with_hand(self, hand):
+  def start_with_hand(self, hand, turn_number):
     self.hand = hand
 
   def replace_slot_with(self, slot, card):
     old_card = self.hand[slot]
-    print(f'{self.title}:Replaced {old_card} at {slot} with {card} for {self.hand}')
     self.hand[slot] = card
+    if get_should_print():
+      print(f'{self.title}:Replaced {old_card} at {slot} with {card} for {self.hand}')
     raise CardUsedException(
       card_inserted=card,
       slot=slot,
@@ -36,6 +40,7 @@ class Player:
     # return old_card
   
   def do_nothing(self, discard):
-    print(f'{self.title}:Did nothing with {discard} for {self.hand}')
+    if get_should_print():
+      print(f'{self.title}:Did nothing with {discard} for {self.hand}')
     raise UnusedTurnException(discard=discard)
 
