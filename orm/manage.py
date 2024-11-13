@@ -10,15 +10,26 @@ def init_django(name='db'):
         INSTALLED_APPS=[
             'orm.db',
         ],
-        DATABASES={
-           'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': f'{name}.sqlite3', # This is where you put the name of the db file. 
-                        # If one doesn't exist, it will be created at migration time.
-                'OPTIONS': {
-                    # 'timeout': 20,  # Optional: Increase the timeout for lock contention
-                    # 'journal_mode': 'WAL',  # Enable Write-Ahead Logging
-                }
+        # DATABASES={
+        #    'default': {
+        #         'ENGINE': 'django.db.backends.sqlite3',
+        #         'NAME': f'{name}.sqlite3', # This is where you put the name of the db file. 
+        #                 # If one doesn't exist, it will be created at migration time.
+        #         'OPTIONS': {
+        #             # 'timeout': 20,  # Optional: Increase the timeout for lock contention
+        #             # 'journal_mode': 'WAL',  # Enable Write-Ahead Logging
+        #         }
+        #     }
+        # }
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "data",
+                "USER": "root",
+                "PASSWORD": "root",
+                "HOST": "localhost",
+                "PORT": "5432",
+
             }
         }
     )

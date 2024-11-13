@@ -10,9 +10,13 @@ import itertools
 import threading
 
 
-
-x = int(kwargs.get('min_players', '1'))
-kwargs.pop('min_players')
+x = 1
+if 'min_players' in kwargs.keys():
+    x = int(kwargs.get('min_players', '1'))
+    kwargs.pop('min_players')
+db = None
+if 'db' in kwargs.keys():
+    db = 'data'
 
 for i in range(x, len(args)+1):
     players_combinations = list(itertools.combinations(args, i))
@@ -31,7 +35,9 @@ for i in range(x, len(args)+1):
         for game in games:
             j = j + 1
             game_str = " ".join(game)
-            command = "python3.12 racko_engine.py " + game_str + kwargs_str + f' -db games-size-{i}-id'
+            command = "python3.11 racko_engine.py " + game_str + kwargs_str
+            if db is None:
+                command = command + f' -db games-size-{i}-id'
             print(command)
             # Create a thread object
             result = subprocess.run(

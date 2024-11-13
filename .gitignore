@@ -3,3 +3,4 @@ db.sqlite3
 *.log
 *.sqlite3
 .vscode
+.volumes
