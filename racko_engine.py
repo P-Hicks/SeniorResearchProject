@@ -76,33 +76,42 @@ def main():
   seed = int(kwargs.get('seed', '12345'))
   n = int(kwargs.get('n', '1000'))
   should_print = kwargs.get('d', 'False') == 'True'
-  # set_should_print(should_print)
-  # check_should_print()
   
+  should_save = kwargs.get('s', 'True') == 'True'
+  debug_game_num = int(kwargs.get('dx', '-1'))
+  if debug_game_num != -1:
+    should_print = False
+  set_should_print(should_print)
+  check_should_print()
   random.seed(seed)
   seeds = [random.randint(-(2**32),(2**32)) for i in range(n) ]
   start_time = time.time()
   i = 0
   for game_seed in seeds:
     i = i + 1
+    if debug_game_num != -1 and debug_game_num == i:
+      set_should_print(True)
+    else:
+      set_should_print(False)
     game = Game.objects.create(
       seed = game_seed
     )
     run_game(players, game_seed)
     for player in players:
       # TODO
-      wrapped_data_holder = player.get_turns()
-      
-      # player_stats[player].append(game_stats)
-      wrapped_data_holder.player.save()
-      # print(wrapped_data_holder.player)
-      wrapped_data_holder.starting_hand.game = game
-      wrapped_data_holder.starting_hand.save()
-      for turn in wrapped_data_holder.turns:
-        # turn.player = wrapped_data_holder.player
-        turn.game = game
-      Turn.objects.bulk_create(wrapped_data_holder.turns)
-      
+      if should_save:
+        wrapped_data_holder = player.get_turns()
+        
+        # player_stats[player].append(game_stats)
+        wrapped_data_holder.player.save()
+        # print(wrapped_data_holder.player)
+        wrapped_data_holder.starting_hand.game = game
+        wrapped_data_holder.starting_hand.save()
+        for turn in wrapped_data_holder.turns:
+          # turn.player = wrapped_data_holder.player
+          turn.game = game
+        Turn.objects.bulk_create(wrapped_data_holder.turns)
+        
       player.reset_turns()
     game_time = time.time() - start_time
     print(f'Game {i} : Seed {game_seed} : {game_time} seconds elapsed')

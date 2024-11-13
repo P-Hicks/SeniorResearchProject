@@ -4,7 +4,7 @@ if there are two cards that are less than 6 away from their ideal number, then i
 
 from config import get_should_print
 from player import Player
-from .biggest_first import BiggestFirstPlayer, BiggestFirstPlayer1
+from .biggest_first import BiggestFirstPlayer
 
 def abs(x):
   if (x >= 0):
