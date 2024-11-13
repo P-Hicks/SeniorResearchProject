@@ -10,7 +10,7 @@ class NewBiggestFirstPlayer(Player):
   '''
   BiggestGoals essentially categorizes cards/slots into 3 categories by the difference of the card value from their ideal number. If the difference is greater than 6, they will use discards to replace it, otherwise, they will only replace that card by drawn cards. 
   '''
-  title = f"BiggestFirst"
+  title = f"NewBiggestFirst"
   
   def take_turn(self, game_card_tracker):
     discard = game_card_tracker.see_discard()
