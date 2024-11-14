@@ -35,7 +35,7 @@ for i in range(x, len(args)+1):
         for game in games:
             j = j + 1
             game_str = " ".join(game)
-            command = "python3.11 racko_engine.py " + game_str + kwargs_str
+            command = "python racko_engine.py " + game_str + kwargs_str
             if db is None:
                 command = command + f' -db games-size-{i}-id'
             print(command)

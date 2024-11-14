@@ -5,6 +5,15 @@ name = "pypi"
 
 [packages]
 django = "*"
+ipykernel = "*"
+psycopg-binary = "*"
+notebook = "*"
+jupyterlab = "*"
+psycopg = "*"
+matplotlib = "*"
+numpy = "*"
+psycopg2 = "*"
+pandas = "*"
 
 [dev-packages]
 

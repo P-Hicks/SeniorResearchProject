@@ -9,7 +9,7 @@ if kwargs.get('db') is not None:
 from main import setup1, setup2
 
 setup1()
-setup2()
+setup2(should_migrate=True)
 
 
 import random

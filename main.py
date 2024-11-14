@@ -8,8 +8,11 @@ def setup1():
     init_django(name=db_name)
 
 
-def setup2():
-    from orm.manage import migrate
-    from orm.db import models
+def setup2(should_migrate=True):
+    if should_migrate:
+        from orm.manage import migrate
+        from orm.db import models
 
-    migrate()
+        migrate()
+    else:
+        pass
