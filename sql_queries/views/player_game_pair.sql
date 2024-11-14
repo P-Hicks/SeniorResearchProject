@@ -1,7 +1,5 @@
-DROP VIEW IF EXISTS player_game_pair;
-
-CREATE VIEW
-    player_game_pair AS
+CREATE
+OR REPLACE VIEW player_game_pair AS
 SELECT
     sh.id as startinghand_id,
     sh.created_at,

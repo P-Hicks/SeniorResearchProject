@@ -24,7 +24,7 @@ def init_django(name='db'):
         DATABASES = {
             "default": {
                 "ENGINE": "django.db.backends.postgresql",
-                "NAME": "data",
+                "NAME": name,
                 "USER": "root",
                 "PASSWORD": "root",
                 "HOST": "localhost",

@@ -1,7 +1,5 @@
-DROP VIEW IF EXISTS game_with_numplayers;
-
-CREATE VIEW
-    game_with_numplayers AS
+CREATE
+OR REPLACE VIEW game_with_numplayers AS
 SELECT
     game.id as id,
     game.seed as seed,
