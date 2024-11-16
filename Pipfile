@@ -16,6 +16,8 @@ psycopg2-binary = "*"
 psycopg2 = "*"
 psycopg = "*"
 psycopg-binary = "*"
+statsmodels = "*"
+scikit-learn = "*"
 
 [dev-packages]
 
