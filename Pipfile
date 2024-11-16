@@ -6,15 +6,16 @@ name = "pypi"
 [packages]
 django = "*"
 ipykernel = "*"
-psycopg-binary = "*"
 notebook = "*"
 jupyterlab = "*"
-psycopg = "*"
 matplotlib = "*"
 numpy = "*"
-psycopg2 = "*"
 pandas = "*"
 scipy = "*"
+psycopg2-binary = "*"
+psycopg2 = "*"
+psycopg = "*"
+psycopg-binary = "*"
 
 [dev-packages]
 

@@ -1,0 +1,1 @@
+select * from player_game_stats as stats join player_with_numturns as pair on pair.game_id = stats.game_id and pair.name = stats.name where stats.numturns != pair.number_of_turns

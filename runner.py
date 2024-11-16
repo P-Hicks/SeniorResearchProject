@@ -8,8 +8,10 @@ import subprocess
 
 import itertools
 import threading
+import time
+import signal 
 
-
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 x = 1
 if 'min_players' in kwargs.keys():
     x = int(kwargs.get('min_players', '1'))
@@ -17,6 +19,28 @@ if 'min_players' in kwargs.keys():
 db = None
 if 'db' in kwargs.keys():
     db = 'data'
+
+python_cmd = 'python'
+
+is_running = True
+
+def timer():
+    i = 0
+    while is_running:
+        time.sleep(1.0)
+        i = i + 1
+        print(f'{i} seconds elapsed')
+
+
+timer_thread = threading.Thread(
+    target=timer,
+    args=[],
+    daemon=False
+)
+
+timer_thread.start()
+
+
 
 for i in range(x, len(args)+1):
     players_combinations = list(itertools.combinations(args, i))
@@ -35,7 +59,7 @@ for i in range(x, len(args)+1):
         for game in games:
             j = j + 1
             game_str = " ".join(game)
-            command = "python racko_engine.py " + game_str + kwargs_str
+            command = f"{python_cmd} racko_engine.py " + game_str + kwargs_str
             if db is None:
                 command = command + f' -db games-size-{i}-id'
             print(command)
@@ -49,7 +73,7 @@ for i in range(x, len(args)+1):
             )
             
             # Print the output
-            # print(result.stdout)
+            print(result.stdout)
 
             # thread = threading.Thread(target = lambda a : subprocess.run(a, capture_output=True, text=True, check=True, shell=True), args=[command])
 
@@ -64,7 +88,11 @@ for i in range(x, len(args)+1):
     #                        shell=True,
     #                        start_new_session=True)
 
+is_running = False
 
+time.sleep(1)
+
+print('done!')
 
 # print(result.stdout)
 

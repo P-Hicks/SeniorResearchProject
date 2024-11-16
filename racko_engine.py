@@ -93,9 +93,10 @@ def main():
       set_should_print(True)
     else:
       set_should_print(False)
-    game = Game.objects.create(
-      seed = game_seed
-    )
+    if should_save:
+      game = Game.objects.create(
+        seed = game_seed
+      )
     run_game(players, game_seed)
     for player in players:
       # TODO
