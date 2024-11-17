@@ -7,7 +7,7 @@ import psycopg2
 def run_query(query, fetch=True):
     result = None
     try:
-        # connection = psycopg2.connect("dbname=data_with_time user=root password=root")
+        connection = psycopg2.connect("dbname=data_with_time user=root password=root")
         # Connect to DB and create a cursor
         # sqlite_connection = sqlite3.connect('db.sqlite3')
         cursor = connection.cursor()

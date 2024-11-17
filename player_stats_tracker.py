@@ -85,7 +85,6 @@ class PlayerStatsTracker(player.Player):
       start = time.perf_counter_ns()
       result = self.player.take_turn(wrapped_tracker)
     except player.CardUsedException as cue:
-      
       elapsed = (time.perf_counter_ns()  - start)
       turn = Turn(
         draw_choice = wrapped_tracker._draw_card,
@@ -107,7 +106,7 @@ class PlayerStatsTracker(player.Player):
       print_deck_state(game_card_tracker)
       return
     except player.UnusedTurnException as ute:
-      elapsed = (time.process_time() - start)
+      elapsed = (time.perf_counter_ns() - start)
       turn = Turn(
         turn_type = Turn.Types.NONE,
         draw_choice = wrapped_tracker._draw_card,
