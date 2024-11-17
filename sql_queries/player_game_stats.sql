@@ -8,5 +8,6 @@ numdraws,
 numnones,
 (numdiscards::float) / (numturns::float) as percentdiscards,
 (numdraws::float) / (numturns::float) as percentdraws,
-(numnones::float) / (numturns::float) as percentnones
+(numnones::float) / (numturns::float) as percentnones,
+avg_computational_time
 FROM player_game_stats

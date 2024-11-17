@@ -48,7 +48,7 @@ class Turn(Model):
     discard_choice = models.IntegerField(null=False,blank=False,default=-1)
     card_used = models.IntegerField(null=True,blank=True,)
     card_discarded = models.IntegerField(null=False,blank=False,default=-1)
-    computational_time = models.FloatField(null=False, default=0.00)
+    computational_time = models.FloatField(null=False, default=-1.00)
     player = models.ForeignKey(
         "Player",
         on_delete=models.CASCADE,

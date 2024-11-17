@@ -82,11 +82,11 @@ class PlayerStatsTracker(player.Player):
     wrapped_tracker = GameCardTrackerWrapper(game_card_tracker)
     self._turn_number = self._turn_number + 1
     try:
-      start = time.process_time()
+      start = time.perf_counter_ns()
       result = self.player.take_turn(wrapped_tracker)
     except player.CardUsedException as cue:
       
-      elapsed = (time.process_time() - start)
+      elapsed = (time.perf_counter_ns()  - start)
       turn = Turn(
         draw_choice = wrapped_tracker._draw_card,
         discard_choice = wrapped_tracker._discard_card,

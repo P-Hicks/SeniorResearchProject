@@ -46,6 +46,7 @@ def get_stats_df():
         'percentdiscards':7,
         'percentdraws':8,
         'percentnones':9,
+        'avgcomputationaltime':10,
     }
     data = {
 
