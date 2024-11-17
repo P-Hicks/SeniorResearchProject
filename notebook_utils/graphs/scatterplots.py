@@ -3,7 +3,7 @@ from ..queries import run_query
 import matplotlib.pyplot as plt 
 import numpy as np
 
-def scatterplot(df, name, xfield, yfield, field, show_size = True, max_turns = None):
+def scatterplot(df, name, xfield, yfield, field, show_size = True, max_turns = None, xfieldname=None, yfieldname=None):
     query = f'''
     select name,
     numturns,
@@ -19,6 +19,7 @@ def scatterplot(df, name, xfield, yfield, field, show_size = True, max_turns = N
         "count" : [i[3] for i in _data],
         xfield : [i[2] for i in _data]
     }
+    xfield = f'percent{field}'
     _df1 = pd.DataFrame(data)
     if name is not None:
         _df1 = _df1[(_df1['name'] == name)]
@@ -32,6 +33,17 @@ def scatterplot(df, name, xfield, yfield, field, show_size = True, max_turns = N
         plt.scatter(x, y, s= sizes)
     else:
         plt.scatter(x, y, s=2.5)
+    field_minus_s = field[0:-1].upper()
+
+    xfieldname = f'Percentage of turns of type {field_minus_s}'
+    yfieldname = 'Number of turns'
+    if name is not None:
+        title = f'Performance of Alg. {name} Based On Turn Type of {field_minus_s}'
+    else:
+        title = f'Performance based on turn type of {field_minus_s}'
+    plt.title(title)
+    plt.xlabel(xfieldname)
+    plt.ylabel(yfieldname)
     plt.show()
 
 '''
@@ -72,4 +84,7 @@ def comp_time_scatterplot(name = None, show_size = True, max_turns = None):
         plt.scatter(x, y, s= sizes)
     else:
         plt.scatter(x, y, s=2.5)
+    plt.title(f'Computational Time and Perforance for Alg. {name}')
+    plt.xlabel(f'Average Computation Time (ns) per turn')
+    plt.ylabel(f'Number of turns to get Rack-O')
     plt.show()
