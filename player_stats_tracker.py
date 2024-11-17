@@ -3,6 +3,7 @@ import player
 import random
 from orm.db.models import Turn, StartingHand, Player as PlayerRecord
 from enum import Enum
+import time
 
 class WrappedDataHolder:
   def __init__(self, player, starting_hand, turns):
@@ -81,8 +82,11 @@ class PlayerStatsTracker(player.Player):
     wrapped_tracker = GameCardTrackerWrapper(game_card_tracker)
     self._turn_number = self._turn_number + 1
     try:
+      start = time.process_time()
       result = self.player.take_turn(wrapped_tracker)
     except player.CardUsedException as cue:
+      
+      elapsed = (time.process_time() - start)
       turn = Turn(
         draw_choice = wrapped_tracker._draw_card,
         discard_choice = wrapped_tracker._discard_card,
@@ -91,6 +95,7 @@ class PlayerStatsTracker(player.Player):
         player = self.player_record,
         turn_number = self._turn_number,
         slot = cue.slot,
+        computational_time = elapsed,
       )
       turn.set_type()
       self.turns.append(turn)
@@ -102,7 +107,7 @@ class PlayerStatsTracker(player.Player):
       print_deck_state(game_card_tracker)
       return
     except player.UnusedTurnException as ute:
-      
+      elapsed = (time.process_time() - start)
       turn = Turn(
         turn_type = Turn.Types.NONE,
         draw_choice = wrapped_tracker._draw_card,
@@ -112,6 +117,7 @@ class PlayerStatsTracker(player.Player):
         player = self.player_record,
         turn_number = self._turn_number,
         slot = None,
+        computational_time = elapsed,
       )
       self.turns.append(turn)
       if (ute.discard == game_card_tracker.see_discard()):
