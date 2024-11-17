@@ -19,11 +19,11 @@ def scatterplot(df, name, xfield, yfield, field, show_size = True, max_turns = N
         "count" : [i[3] for i in _data],
         xfield : [i[2] for i in _data]
     }
-    _df = pd.DataFrame(data)
-    _df1 = _df[(_df['name'] == name)]
+    _df1 = pd.DataFrame(data)
+    if name is not None:
+        _df1 = _df1[(_df1['name'] == name)]
     if max_turns is not None:
-        
-        _df1 = _df[(_df['numturns'] <= max_turns)]
+        _df1 = _df1[(_df1['numturns'] <= max_turns)]
     # _df2 = df1.groupby([xfield, yfield]).count()
     x = _df1[xfield]
     y = _df1[yfield]
